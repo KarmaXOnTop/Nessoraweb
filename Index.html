@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Nessora — Agence web moderne & efficace</title>
+		<meta name="description" content="Nessora — Création de sites web modernes et efficaces pour petites entreprises et indépendants." />
+
+		<!-- Favicon (SVG data URL) -->
+		<link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 x2=%221%22 y1=%220%22 y2=%221%22><stop offset=%220%25" stop-color=%22%23f6c85f%22/><stop offset=%2250%25" stop-color=%22%23804ecf%22/><stop offset=%22100%25" stop-color=%22%2300d4ff%22/></linearGradient></defs><rect width=%22100%25%22 height=%22100%25%22 rx=%2215%22 fill=%22%230b0b0b%22/><text x=%2250%22 y=%2258%22 font-size=%2270%22 font-family=%22Arial%22 font-weight=%22900%22 text-anchor=%22middle%22 fill=%22url(%23g)%22>N</text></svg>' />
+
+		<!-- Fonts: modern sans-serif. You can remove the Google Fonts link to be fully local. -->
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+		<style>
+			/* ====== Variables & Reset ====== */
+			:root{
+				--bg:#0b0b0b;
+				--panel:#141414;
+				--muted:#9a9a9a;
+				--accent-start:#f6c85f; /* gold */
+				--accent-mid:#804ecf;   /* violet */
+				--accent-end:#00d4ff;   /* cyan */
+				--glass: rgba(255,255,255,0.03);
+				--radius:14px;
+				--max-width:1100px;
+				--glass-border: rgba(255,255,255,0.04);
+				--soft-glow: 0 10px 30px rgba(128,78,207,0.12);
+				font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+			}
+
+			*{box-sizing:border-box}
+			html,body{height:100%}
+			body{
+				margin:0;
+				background:var(--bg);
+				color:#efefef;
+				-webkit-font-smoothing:antialiased;
+				-moz-osx-font-smoothing:grayscale;
+				line-height:1.45;
+			}
+
+			a{color:inherit;text-decoration:none}
+
+			/* ====== Layout ====== */
+			.container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
+
+			header{position:fixed;left:0;right:0;top:18px;z-index:40;display:flex;align-items:center;justify-content:center;pointer-events:none}
+			.nav{display:flex;gap:18px;background:transparent;padding:8px 12px;border-radius:999px;pointer-events:auto}
+			.nav a{color:var(--muted);font-weight:600;padding:8px 12px;border-radius:999px;transition:all .25s}
+			.nav a:hover{color:#fff;transform:translateY(-2px);box-shadow:0 6px 20px rgba(128,78,207,0.12)}
+
+			/* ====== Hero ====== */
+			.hero{min-height:100vh;display:grid;place-items:center;position:relative;padding:120px 0}
+			.hero__bg{position:absolute;inset:0;z-index:0;overflow:hidden;opacity:.95;pointer-events:none}
+			.hero__bg::before{content:'';position:absolute;left:50%;top:28%;transform:translateX(-50%);width:860px;height:860px;border-radius:50%;background:radial-gradient(circle at 30% 20%, rgba(246,200,95,0.06), transparent 15%), radial-gradient(circle at 70% 80%, rgba(128,78,207,0.06), transparent 20%), radial-gradient(circle at 50% 50%, rgba(0,212,255,0.03), transparent 25%);filter:blur(28px);opacity:.9}
+			/* animated conic overlay for tech-lux feel */
+			.hero__bg::after{content:'';position:absolute;inset:-10%;background:conic-gradient(from 120deg at 50% 50%, rgba(246,200,95,0.06), rgba(128,78,207,0.05), rgba(0,212,255,0.04), rgba(246,200,95,0.06));mix-blend-mode:screen;animation:spin 18s linear infinite;filter:blur(28px);opacity:.5}
+
+			@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+			.hero__card{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;padding:48px 28px}
+
+			/* Floating decorative shapes (lightweight, CSS only) */
+			.hero__bg .shape{position:absolute;border-radius:50%;opacity:.06;filter:blur(18px)}
+			.hero__bg .shape.s1{width:220px;height:220px;left:8%;top:12%;background:linear-gradient(135deg,var(--accent-start),var(--accent-mid))}
+			.hero__bg .shape.s2{width:160px;height:160px;right:6%;top:24%;background:linear-gradient(135deg,var(--accent-mid),var(--accent-end))}
+			.hero__bg .shape.s3{width:300px;height:300px;left:50%;bottom:8%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent-end),var(--accent-start))}
+
+			/* Stylised N logo */
+			.logo{
+				width:180px;height:180px;border-radius:28px;display:grid;place-items:center;
+				font-size:120px;font-weight:900;line-height:1;font-family:Inter, Arial;display:flex;align-items:center;justify-content:center;position:relative;padding:8px;
+				background:linear-gradient(135deg,var(--accent-start),var(--accent-mid),var(--accent-end));
+				-webkit-background-clip:text;background-clip:text;color:transparent; /* text gradient */
+				box-shadow:var(--soft-glow), inset 0 -6px 30px rgba(255,255,255,0.02);
+				transition:transform .36s cubic-bezier(.2,.9,.3,1), filter .36s;
+				will-change:transform,filter;
+			}
+			.logo::after{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(90deg,rgba(255,255,255,0.04),transparent 30%);mix-blend-mode:overlay;opacity:0;transition:opacity .5s}
+			.logo:hover{transform:translateY(-10px) rotate(-1deg) scale(1.04);filter:drop-shadow(0 22px 50px rgba(128,78,207,0.18));}
+			.logo:hover::after{opacity:1}
+			/* Make the letter N more geometric */
+			.logo span{background:linear-gradient(135deg,var(--accent-start),var(--accent-mid),var(--accent-end));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+			/* subtle shimmer across logo */
+			@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+			.logo span{background-image:linear-gradient(90deg,rgba(255,255,255,0.06),rgba(255,255,255,0));background-size:200% 100%;animation:shimmer 3.2s linear infinite}
+
+			h1{margin:0;font-size:28px;letter-spacing:1px}
+			.slogan{color:var(--muted);max-width:780px}
+
+			.cta{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;font-weight:800;border:0;cursor:pointer;background-image:linear-gradient(90deg,var(--accent-start),var(--accent-mid));color:#080808;box-shadow:var(--soft-glow);transition:transform .2s cubic-bezier(.2,.9,.2,1), box-shadow .2s}
+			.cta::after{content:'';position:absolute;left:0;right:0;bottom:-8px;height:8px;background:linear-gradient(90deg,var(--accent-start),var(--accent-mid));filter:blur(18px);opacity:.3;border-radius:999px}
+			.cta:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 26px 60px rgba(128,78,207,0.18)}
+			.cta:active{transform:translateY(-2px) scale(.995)}
+
+			/* animated pulse for CTA when in view */
+			.cta.pulse{animation:pop .9s ease-in-out 0s 1}
+			@keyframes pop{0%{transform:scale(.98)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+			/* ====== Sections ====== */
+			section{padding:88px 0}
+			.section-title{font-size:18px;color:var(--muted);margin-bottom:18px}
+
+			.panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.12));border:1px solid var(--glass-border);padding:20px;border-radius:var(--radius);backdrop-filter:blur(4px)}
+
+			/* Services cards */
+			.grid{display:grid;gap:20px}
+			.services .grid{grid-template-columns:repeat(3,1fr)}
+			.card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06));padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .35s;cursor:default;transform-origin:center;will-change:transform}
+			.card::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:12px;margin:-1px;background:linear-gradient(90deg,transparent,rgba(128,78,207,0.06),transparent);opacity:0;transition:opacity .28s}
+			.card:hover{transform:translateY(-16px) rotateX(3deg) scale(1.02);box-shadow:0 30px 70px rgba(2,6,23,0.7),0 8px 30px rgba(128,78,207,0.08)}
+			.card:hover::before{opacity:1}
+			.card h3{margin:0 0 8px 0}
+			.price{font-weight:800;color:var(--accent-start);font-size:18px}
+
+			/* Why us */
+			.why .grid{grid-template-columns:repeat(3,1fr);text-align:center}
+			.why .item{padding:22px}
+
+			/* Portfolio */
+			.portfolio .grid{grid-template-columns:repeat(3,1fr)}
+			.thumb{height:140px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.12));display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+
+			/* Contact form */
+      .contact-grid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
+      @media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+
+  .contact-panel{padding:28px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.12));border:1px solid var(--glass-border);backdrop-filter: blur(6px);position:relative}
+  .contact-info{padding:22px}
+  .contact-info h3{margin:6px 0 12px 0;font-size:20px}
+  .contact-info p{color:var(--muted)}
+
+    /* Floating label inputs */
+      .field{position:relative;margin-bottom:12px}
+      .field input,.field textarea{width:100%;padding:16px 14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.06));border:1px solid rgba(255,255,255,0.04);color:#fff;outline:none;font-size:15px}
+      .field textarea{min-height:140px;resize:vertical}
+      .field label{position:absolute;left:14px;top:14px;color:rgba(255,255,255,0.55);pointer-events:none;transition:transform .18s, font-size .18s, top .18s}
+      .field input:focus + label, .field input:not(:placeholder-shown) + label,
+      .field textarea:focus + label, .field textarea:not(:placeholder-shown) + label{transform:translateY(-10px);font-size:12px;top:6px;color:var(--accent-mid)}
+
+      /* animated outline */
+      .field .outline{position:absolute;inset:0;border-radius:12px;pointer-events:none;border:2px solid transparent;box-shadow:0 6px 20px rgba(0,0,0,0.6)}
+      .field input:focus ~ .outline, .field textarea:focus ~ .outline{border-image:linear-gradient(90deg,var(--accent-start),var(--accent-mid)) 1;box-shadow:0 16px 40px rgba(128,78,207,0.12)}
+
+      .send-row{display:flex;gap:12px;align-items:center}
+      .send-btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent-mid),var(--accent-end));color:#061018;font-weight:800;cursor:pointer;overflow:visible}
+      .send-btn .spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.35);border-left-color:transparent;opacity:0;transform:scale(.9);transition:opacity .18s, transform .18s}
+      .send-btn.sending .spinner{opacity:1;transform:scale(1);animation:spin 0.9s linear infinite}
+      .send-btn:active{transform:translateY(1px)}
+      /* toast */
+      #toastContainer{position:fixed;top:20px;right:20px;z-index:120;display:flex;flex-direction:column;gap:10px}
+      .toast{background:linear-gradient(180deg,#0e0e10,rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.06);padding:12px 16px;border-radius:12px;color:#fff;box-shadow:0 12px 36px rgba(2,6,23,0.6);min-width:220px;display:flex;gap:12px;align-items:center}
+      .toast.success{border-left:4px solid var(--accent-start)}
+      .toast.error{border-left:4px solid #ff5c7c}
+
+      footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center}
+			/* ====== Responsive ====== */
+			@media (max-width:900px){
+				.services .grid,.why .grid,.portfolio .grid{grid-template-columns:1fr}
+				.logo{width:120px;height:120px;font-size:80px}
+				.hero{padding:80px 0}
+			}
+
+			@media (max-width:480px){
+				h1{font-size:20px}
+				.slogan{padding:0 8px}
+			}
+
+			/* ====== Subtle Animations ====== */
+			/* Scroll-triggered reveal: elements start hidden and become visible when in viewport */
+			.reveal{opacity:0;transform:translateY(18px) scale(.995);transition:opacity .8s cubic-bezier(.2,.9,.2,1), transform .8s cubic-bezier(.2,.9,.2,1);will-change:opacity,transform}
+			.reveal.fade-left{transform:translateX(-18px) scale(.995)}
+			.reveal.fade-right{transform:translateX(18px) scale(.995)}
+			.reveal.in-view{opacity:1;transform:translateY(0) scale(1)}
+
+		</style>
+	</head>
+	<body>
+
+		<header>
+			<nav class="nav container" aria-label="Navigation">
+				<a href="#about">À propos</a>
+				<a href="#services">Services</a>
+				<a href="#contact">Contact</a>
+			</nav>
+		</header>
+
+		<main>
+			<!-- HERO -->
+			<section class="hero">
+				<div class="hero__bg" aria-hidden="true">
+					<div class="shape s1" aria-hidden="true"></div>
+					<div class="shape s2" aria-hidden="true"></div>
+					<div class="shape s3" aria-hidden="true"></div>
+				</div>
+				<div class="hero__card container">
+					<div class="logo reveal" aria-hidden="false"><span>N</span></div>
+					<h1 class="reveal delay">Nessora</h1>
+					<p class="slogan reveal">Agence de création de sites web modernes Landing page - One page &amp; efficaces</p>
+					<div class="reveal delay">
+						<a class="cta" href="#contact">Nous contacter</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- À propos -->
+			<section id="about">
+				<div class="container">
+					<div class="section-title">À propos</div>
+					<div class="panel reveal">
+						<p><strong>Nous sommes deux jeunes entrepreneurs</strong> passionnés de web design et développement. Notre objectif : créer des sites professionnels, accessibles et livrés rapidement. Nous combinons sérieux, pédagogie et créativité pour offrir un service de qualité à prix mesuré.</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Services -->
+			<section id="services" class="services">
+				<div class="container">
+					<div class="section-title">Services</div>
+					<div class="grid reveal">
+						<div class="card">
+							<h3>One Page Essentiel</h3>
+							<div class="price">250€</div>
+							<p>Page unique optimisée, design professionnel, responsive, livraison rapide. Parfait pour une présence en ligne claire et efficace.</p>
+						</div>
+						<div class="card">
+							<h3>Pro</h3>
+							<div class="price">400€</div>
+							<p>One Page + sections avancées, formulaires configurés, optimisation SEO de base et support initial inclus.</p>
+						</div>
+						<div class="card">
+							<h3>Premium</h3>
+							<div class="price">600€</div>
+							<p>Design personnalisé, animations, intégration avancée (blog, galeries), assistance pendant 30 jours après livraison.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Why choose -->
+			<section class="why">
+				<div class="container">
+					<div class="section-title">Pourquoi nous choisir</div>
+					<div class="grid reveal">
+						<div class="item panel">
+							<div style="font-size:26px"></div>
+							<h4>Livraison rapide</h4>
+							<p class="muted">Délais courts sans sacrifier la qualité.</p>
+						</div>
+						<div class="item panel">
+							<div style="font-size:26px"></div>
+							<h4>Design premium</h4>
+							<p class="muted">Esthétique moderne pour inspirer confiance.</p>
+						</div>
+						<div class="item panel">
+							<div style="font-size:26px"></div>
+							<h4>Prix accessibles</h4>
+							<p class="muted">Offres claires et compétitives pour petites structures.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Portfolio (supprimé pour se concentrer sur le site principal) -->
+
+			<!-- Contact -->
+			<section id="contact">
+				<div class="container">
+					<div class="section-title">Contact</div>
+          <div class="panel reveal contact-panel">
+            <div class="contact-grid">
+              <div class="contact-info reveal fade-left">
+                <h3>Parlons de votre projet</h3>
+                <p>Contactez-nous pour une estimation rapide et une proposition adaptée.</p>
+                <ul style="margin-top:14px;color:var(--muted);line-height:1.6">
+                  <li>✅ Réponse rapide sous 48h</li>
+                  <li>✅ Forfaits clairs et livraison rapide</li>
+                  <li>✅ Assistance après livraison</li>
+                </ul>
+              </div>
+
+              <div class="reveal fade-right">
+                <!-- Fancy contact form -->
+                <form id="contactForm" action="https://formspree.io/f/your-id" method="POST" aria-labelledby="contact-form-title">
+                  <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+                    <div style="flex:1"><strong id="contact-form-title">Envoyez-nous un message</strong></div>
+                    <div style="color:var(--muted);font-size:13px">Temps moyen de réponse : 48h</div>
+                  </div>
+
+                  <div class="field">
+                    <input type="text" name="name" id="in-name" placeholder=" " required>
+                    <label for="in-name">Votre nom</label>
+                    <div class="outline"></div>
+                  </div>
+
+                  <div class="field">
+                    <input type="email" name="email" id="in-email" placeholder=" " required>
+                    <label for="in-email">Email</label>
+                    <div class="outline"></div>
+                  </div>
+
+                  <div class="field">
+                    <textarea name="message" id="in-message" placeholder=" " required></textarea>
+                    <label for="in-message">Votre message</label>
+                    <div class="outline"></div>
+                  </div>
+
+                  <div class="send-row">
+                    <button type="submit" class="send-btn" aria-live="polite">
+                      <span class="spinner" aria-hidden="true"></span>
+                      <span class="send-label">Envoyer</span>
+                    </button>
+                    <div id="formStatus" style="color:var(--muted);font-size:14px"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+			<footer>
+				<div class="container">
+					<div>Tous droits réservés. &copy; <span id="year"></span> Nessora</div>
+				</div>
+			</footer>
+		</main>
+
+		<script>
+			// Set year in footer
+			document.getElementById('year').textContent = new Date().getFullYear();
+
+			// Smooth scroll for anchor links
+			document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+				anchor.addEventListener('click', function(e){
+					const href = this.getAttribute('href');
+					if(href.length>1){
+						e.preventDefault();
+						document.querySelector(href).scrollIntoView({behavior:'smooth',block:'start'});
+					}
+				});
+			});
+
+// Enhanced form handling with animated toast and send state
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('formStatus');
+      const toastContainer = document.createElement('div');
+      toastContainer.id = 'toastContainer';
+      document.body.appendChild(toastContainer);
+
+      function showToast(type, message){
+        const t = document.createElement('div');
+        t.className = 'toast ' + (type||'');
+        t.innerHTML = `<div style="font-size:18px;line-height:1">${type==='success'? '✅':'⚠️'}</div><div style="flex:1">${message}</div>`;
+        toastContainer.appendChild(t);
+        t.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'cubic-bezier(.2,.9,.2,1)'});
+        setTimeout(()=>{ t.animate([{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(-8px)'}],{duration:220}).onfinish = ()=>t.remove(); },4000);
+      }
+
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const endpoint = form.getAttribute('action');
+        const btn = form.querySelector('.send-btn');
+        const spinner = btn.querySelector('.spinner');
+        const label = btn.querySelector('.send-label');
+        btn.classList.add('sending'); btn.disabled = true; label.textContent = 'Envoi...'; status.textContent = '';
+
+        // collect data
+        const data = new FormData(form);
+
+        // simulate if not configured
+        if(endpoint.includes('your-id')){
+          await new Promise(r=>setTimeout(r,1100));
+          showToast('success','Message simulé — remplacez l\'action par votre endpoint Formspree pour envoi réel.');
+          form.reset();
+        } else {
+          try{
+            const resp = await fetch(endpoint, {method:'POST',body:data,headers:{'Accept':'application/json'}});
+            if(resp.ok){ showToast('success','Message envoyé — merci !'); form.reset(); }
+            else{ showToast('error','Erreur lors de l\'envoi — vérifiez l\'endpoint.'); }
+          }catch(err){ showToast('error','Erreur réseau lors de l\'envoi.'); }
+        }
+
+        btn.classList.remove('sending'); btn.disabled = false; label.textContent = 'Envoyer';
+			});
+
+			// Subtle parallax: translate logo slightly on scroll
+			const logo = document.querySelector('.logo');
+			window.addEventListener('scroll', ()=>{
+				const sc = window.scrollY/30;
+				if(logo) logo.style.transform = `translateY(${Math.min(12,sc)}px)`;
+			}, {passive:true});
+
+			// Scroll-triggered reveal using IntersectionObserver
+			const revealElements = document.querySelectorAll('.reveal');
+			const revealObserver = new IntersectionObserver((entries, obs) => {
+				entries.forEach(entry => {
+					if(entry.isIntersecting){
+						const el = entry.target;
+						// Stagger delay based on position in NodeList
+						const idx = Array.from(revealElements).indexOf(el);
+						el.style.transitionDelay = (idx * 0.06) + 's';
+						el.classList.add('in-view');
+						obs.unobserve(el);
+					}
+				});
+			}, {threshold: 0.12});
+			revealElements.forEach(el => revealObserver.observe(el));
+
+			// Subtle floating animation for decorative shapes
+			const shapes = document.querySelectorAll('.hero__bg .shape');
+			shapes.forEach((s,i)=>{
+				const dur = 8 + i*2;
+				s.animate([
+					{transform: 'translateY(0px) translateX(0px)'},
+					{transform: `translateY(${10 + i*6}px) translateX(${(i-1)*6}px)`},
+					{transform: 'translateY(0px) translateX(0px)'}
+				],{duration:dur*1000,iterations:Infinity,easing:'ease-in-out'});
+			});
+
+			// Card tilt on mousemove (desktop only)
+			const cards = document.querySelectorAll('.card');
+			function handleTilt(e){
+				const rect = this.getBoundingClientRect();
+				const x = (e.clientX - rect.left) / rect.width - 0.5;
+				const y = (e.clientY - rect.top) / rect.height - 0.5;
+				const rx = (-y * 6).toFixed(2);
+				const ry = (x * 8).toFixed(2);
+				this.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+			}
+			function resetTilt(){ this.style.transform = ''; }
+			if(window.matchMedia('(pointer:fine)').matches){
+				cards.forEach(c=>{ c.addEventListener('mousemove', handleTilt); c.addEventListener('mouseleave', resetTilt); });
+			}
+
+			// CTA pulse when entering view
+			const cta = document.querySelector('.cta');
+			if(cta){
+				const ctaObserver = new IntersectionObserver((entries)=>{ entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('pulse'); setTimeout(()=>en.target.classList.remove('pulse'),900);} }); },{threshold:0.6});
+				ctaObserver.observe(cta);
+			}
+		</script>
+	</body>
+</html>
